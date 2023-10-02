@@ -1,0 +1,18 @@
+{
+    "token": "bot_token_here",
+    "name": "H Bot",
+    "status": "dnd",
+    "status_text":"h",
+    "color": "FF0000",
+    "guilds": [
+        1118468021636309064
+    ],
+    "confession_channel": 1157874706414833694,
+    "log_confession": true,
+    "confession_log_channel": 1157878868204605500,
+    "owner_ids": [
+        1117690495481688228,
+        1118644765441937418,
+        239184366603862017
+    ]
+}
