@@ -68,8 +68,8 @@ async def help(interaction):
     e.add_field(name="Help",value="this command displays this message and is used like `/help`")
     await interaction.response.send_message(embed=e)
 
-@client.slash_command(name="test", description="Sends an anonymous confession!", guild_ids=bot.guilds)
-async def test(interaction, text):
+@client.slash_command(name="confess", description="Sends an anonymous confession!", guild_ids=bot.guilds)
+async def confess(interaction, text):
     channel = client.get_channel(bot.anon_channel)
     if bot.anon_log:
         log=client.get_channel(bot.anon_log_channel)
