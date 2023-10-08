@@ -3,6 +3,18 @@ from onami.features.baseclass import Feature
 from onami.cog import OPTIONAL_FEATURES, STANDARD_FEATURES
 
 class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
+    @Feature.Command(parent="oni", name="pyfile")
+    async def oni_pyfile(self, ctx, file):
+        proc=subp.Popen(f"python3 {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE)
+        stdout, stderr=proc.communicate()
+        stdout=stdout.decode("utf-8")
+        stderr=stderr.decode("utf-8")
+        if stderr!="":
+            await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
+        elif stdout!="":
+            await ctx.send(f"```\n{stdout}\n```")
+        else:
+            await ctx.send("Done!!!")
     @Feature.Command(parent="oni", name="js")
     async def oni_js(self, ctx, *, args=None):
         if args==None:
@@ -16,12 +28,24 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         if text.endswith("```"):
             text=text[0:len(text)-4]
         text=text.replace('"','\\"')
-        proc=subp.Popen(f'js -e "{text}"', shell=True, stdout=subp.PIPE, stderr=subp.PIPE)
+        proc=subp.Popen(f'nodejs -e "{text}"', shell=True, stdout=subp.PIPE, stderr=subp.PIPE)
         stdout, stderr=proc.communicate()
         stdout=stdout.decode("utf-8")
         stderr=stderr.decode("utf-8")
         if stdout.endswith("\n"):
             stdout=stdout[0:len(stdout)-1]
+        if stderr!="":
+            await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
+        elif stdout!="":
+            await ctx.send(f"```\n{stdout}\n```")
+        else:
+            await ctx.send("Done!!!")
+    @Feature.Command(parent="oni", name="jsfile")
+    async def oni_jsfile(self, ctx, file):
+        proc=subp.Popen(f"nodejs {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE)
+        stdout, stderr=proc.communicate()
+        stdout=stdout.decode("utf-8")
+        stderr=stderr.decode("utf-8")
         if stderr!="":
             await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
         elif stdout!="":
@@ -47,6 +71,18 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         stderr=stderr.decode("utf-8")
         if stdout.endswith("\n"):
             stdout=stdout[0:len(stdout)-1]
+        if stderr!="":
+            await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
+        elif stdout!="":
+            await ctx.send(f"```\n{stdout}\n```")
+        else:
+            await ctx.send("Done!!!")
+    @Feature.Command(parent="oni", name="rbfile")
+    async def oni_rbfile(self, ctx, file):
+        proc=subp.Popen(f"ruby {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE)
+        stdout, stderr=proc.communicate()
+        stdout=stdout.decode("utf-8")
+        stderr=stderr.decode("utf-8")
         if stderr!="":
             await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
         elif stdout!="":
