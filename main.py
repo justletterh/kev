@@ -1,5 +1,5 @@
 import nextcord as discord
-#import onami
+import subprocess as subp
 from owo import owoify
 from tools import meth, get_settings
 from nextcord.ext import commands
@@ -25,8 +25,30 @@ client = MegaBot(command_prefix=bot.pfx,case_insensitive=True,intents=intents,he
 
 class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
     @Feature.Command(parent="oni", name="js")
-    async def oni_js(self, ctx):
-        await ctx.send("h")
+    async def oni_js(self, ctx, *, args=None):
+        if args==None:
+            await ctx.send("Please input some NodeJS code")
+            return
+        text=args
+        if text.startswith("```js"):
+            text=text[6:len(text)]
+        elif text.startswith("```"):
+            text=text[4:len(text)]
+        if text.endswith("```"):
+            text=text[0:len(text)-4]
+        text=text.replace('"','\\"')
+        proc=subp.Popen(f'js -e "{text}"', shell=True, stdout=subp.PIPE, stderr=subp.PIPE)
+        stdout, stderr=proc.communicate()
+        stdout=stdout.decode("utf-8")
+        stderr=stderr.decode("utf-8")
+        if stdout.endswith("\n"):
+            stdout=stdout[0:len(stdout)-1]
+        if stderr!="":
+            await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
+        elif stdout!="":
+            await ctx.send(f"```\n{stdout}\n```")
+        else:
+            await ctx.send("Done!!!")
 
 @client.event
 async def on_ready():
