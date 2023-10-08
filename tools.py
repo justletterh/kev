@@ -1,5 +1,6 @@
 import ast, re, json
 
+
 def evaluate_expr(expr):
     if isinstance(expr, ast.Expression):
         return evaluate_expr(expr.body)
@@ -17,50 +18,63 @@ def evaluate_expr(expr):
             return left / right
     raise ValueError(f"Can't evaluate {expr}")
 
-meth= lambda s : evaluate_expr(ast.parse(s, mode="eval").body)
+
+meth = lambda s: evaluate_expr(ast.parse(s, mode="eval").body)
+
 
 class Bot:
-    def __init__(self, token, name, status, guilds, anon_channel, anon_log, anon_log_channel, owners, pfx="$", color=0xFF0000):
-        self.token=token
-        self.pfx=pfx
-        self.name=name
-        self.color=color
-        self.status=status
-        self.guilds=guilds
-        self.anon_channel=anon_channel
-        self.anon_log=anon_log
-        self.anon_log_channel=anon_log_channel
-        self.owners=owners
+    def __init__(
+        self,
+        token,
+        name,
+        status,
+        guilds,
+        anon_channel,
+        anon_log,
+        anon_log_channel,
+        owners,
+        pfx="$",
+        color=0xFF0000,
+    ):
+        self.token = token
+        self.pfx = pfx
+        self.name = name
+        self.color = color
+        self.status = status
+        self.guilds = guilds
+        self.anon_channel = anon_channel
+        self.anon_log = anon_log
+        self.anon_log_channel = anon_log_channel
+        self.owners = owners
+
 
 class Status:
     def __init__(self, text, value="online"):
-        self.text=text
-        value=re.sub("[^a-z]+","",value.lower())
-        if value=="away":
-            self.value="idle"
-        elif value not in ["online","offline","dnd","idle"]:
-            self.value="online"
+        self.text = text
+        value = re.sub("[^a-z]+", "", value.lower())
+        if value == "away":
+            self.value = "idle"
+        elif value not in ["online", "offline", "dnd", "idle"]:
+            self.value = "online"
         else:
-            self.value=value
+            self.value = value
+
 
 def get_settings(fn):
     f = open(fn, "r")
     d = f.read()
     f.close()
     d = json.loads(d)
-    d["color"]=int("0x"+d["color"], 16)
-    b=Bot(
-        token = d["token"],
-        name = d["name"],
-        status = Status(
-            value = d["status"],
-            text = d["status_text"]
-        ),
-        color = d["color"],
-        guilds = d["guilds"],
-        anon_channel = d["confession_channel"],
-        anon_log = d["log_confession"],
-        anon_log_channel = d["confession_log_channel"],
-        owners = d["owner_ids"]
+    d["color"] = int("0x" + d["color"], 16)
+    b = Bot(
+        token=d["token"],
+        name=d["name"],
+        status=Status(value=d["status"], text=d["status_text"]),
+        color=d["color"],
+        guilds=d["guilds"],
+        anon_channel=d["confession_channel"],
+        anon_log=d["log_confession"],
+        anon_log_channel=d["confession_log_channel"],
+        owners=d["owner_ids"],
     )
     return b
