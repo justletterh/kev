@@ -40,7 +40,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             await ctx.send(f"```\n{stdout}\n```")
         else:
             await ctx.send("Done!!!")
-    @Feature.Command(parent="oni", name="jsfile", aliases=["js-file", "nodefile", "node-file", "nodejsfile", "nodejs-file", "javascriptfile", "javascript-file"])
+    @Feature.Command(parent="oni", name="jsfile", aliases=["js-file", "nodefile", "node-file", "nodejsfile", "nodejs-file", "javascriptfile", "javascript-file", "nodejavascriptfile", "nodejavascript-file"])
     async def oni_jsfile(self, ctx, file):
         proc=subp.Popen(f"nodejs {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE)
         stdout, stderr=proc.communicate()
