@@ -1,9 +1,45 @@
 import subprocess as subp
 from onami.features.baseclass import Feature
 from onami.cog import OPTIONAL_FEATURES, STANDARD_FEATURES
-
+import re
 
 class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
+    @Feature.Command(parent="oni", name="dm", aliases=["pm"])
+    async def oni_dm(self, ctx, user, *, msg=None):
+        if msg==None:
+            await ctx.send("Please specify a message to dm to user.")
+            return
+        reg=re.compile("^<@!?([0-9]+)>$")
+        h=reg.match(user)
+        if h!=None:
+            user= await self.bot.fetch_user(h.group(1))
+            await user.send(msg)
+            await ctx.send("Done! :white_check_mark:")
+        else:
+            await ctx.send("Please mention a user before the message.")
+            return
+    @Feature.Command(parent="oni", name="multidm", aliases=["multi_dm","multi-dm","multi_pm","multi-pm","multipm"])
+    async def oni_multidm(self, ctx, user, x, *, msg=None):
+        try:
+            x=int(x)
+        except ValueError:
+            await ctx.send("The number of messages to send should be a whole number.")
+            return
+        if msg==None:
+            await ctx.send("Please specify a message to dm to user.")
+            return
+        reg=re.compile("^<@!?([0-9]+)>$")
+        h=reg.match(user)
+        if h!=None:
+            user= await self.bot.fetch_user(h.group(1))
+            if x>5:
+                await ctx.send("Sending...")
+            for _ in range(x):
+                await user.send(msg)
+            await ctx.send("Done! :white_check_mark:")
+        else:
+            await ctx.send("Please mention a user before the message.")
+            return
     @Feature.Command(
         parent="oni", name="pyfile", aliases=["pythonfile", "py-file", "python-file"]
     )
@@ -19,7 +55,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
         parent="oni",
@@ -51,7 +87,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
         parent="oni",
@@ -80,7 +116,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(parent="oni", name="rb", aliases=["ruby"])
     async def oni_rb(self, ctx, *, args=None):
@@ -108,7 +144,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
         parent="oni", name="rbfile", aliases=["rubyfile", "rb-file", "ruby-file"]
@@ -125,7 +161,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(parent="oni", name="lua")
     async def oni_lua(self, ctx, *, args=None):
@@ -153,7 +189,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(parent="oni", name="luafile", aliases=["lua-file"])
     async def oni_luafile(self, ctx, file):
@@ -166,7 +202,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(parent="oni", name="php")
     async def oni_php(self, ctx, *, args=None):
@@ -196,7 +232,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(parent="oni", name="phpfile", aliases=["php-file"])
     async def oni_phpfile(self, ctx, file):
@@ -211,7 +247,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(parent="oni", name="pl", aliases=["perl"])
     async def oni_pl(self, ctx, *, args=None):
@@ -239,7 +275,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
         parent="oni", name="plfile", aliases=["perlfile", "pl-file", "perl-file"]
@@ -256,4 +292,4 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         elif stdout != "":
             await ctx.send(f"```\n{stdout}\n```")
         else:
-            await ctx.send("Done!!!")
+            await ctx.send("Done! :white_check_mark:")
