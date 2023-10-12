@@ -3,36 +3,42 @@ from onami.features.baseclass import Feature
 from onami.cog import OPTIONAL_FEATURES, STANDARD_FEATURES
 import re
 
+
 class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
     @Feature.Command(parent="oni", name="dm", aliases=["pm"])
     async def oni_dm(self, ctx, user, *, msg=None):
-        if msg==None:
+        if msg == None:
             await ctx.send("Please specify a message to dm to user.")
             return
-        reg=re.compile("^<@!?([0-9]+)>$")
-        h=reg.match(user)
-        if h!=None:
-            user= await self.bot.fetch_user(h.group(1))
+        reg = re.compile("^<@!?([0-9]+)>$")
+        h = reg.match(user)
+        if h != None:
+            user = await self.bot.fetch_user(h.group(1))
             await user.send(msg)
             await ctx.send("Done! :white_check_mark:")
         else:
             await ctx.send("Please mention a user before the message.")
             return
-    @Feature.Command(parent="oni", name="multidm", aliases=["multi_dm","multi-dm","multi_pm","multi-pm","multipm"])
+
+    @Feature.Command(
+        parent="oni",
+        name="multidm",
+        aliases=["multi_dm", "multi-dm", "multi_pm", "multi-pm", "multipm"],
+    )
     async def oni_multidm(self, ctx, user, x, *, msg=None):
         try:
-            x=int(x)
+            x = int(x)
         except ValueError:
             await ctx.send("The number of messages to send should be a whole number.")
             return
-        if msg==None:
+        if msg == None:
             await ctx.send("Please specify a message to dm to user.")
             return
-        reg=re.compile("^<@!?([0-9]+)>$")
-        h=reg.match(user)
-        if h!=None:
-            user= await self.bot.fetch_user(h.group(1))
-            if x>5:
+        reg = re.compile("^<@!?([0-9]+)>$")
+        h = reg.match(user)
+        if h != None:
+            user = await self.bot.fetch_user(h.group(1))
+            if x > 5:
                 await ctx.send("Sending...")
             for _ in range(x):
                 await user.send(msg)
@@ -40,6 +46,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         else:
             await ctx.send("Please mention a user before the message.")
             return
+
     @Feature.Command(
         parent="oni", name="pyfile", aliases=["pythonfile", "py-file", "python-file"]
     )

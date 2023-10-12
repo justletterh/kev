@@ -1,9 +1,10 @@
 import nextcord as discord
 from owo import owoify
-from tools import meth, get_settings
+from tools import meth, get_settings, hex2rgb, hex2word
 from nextcord.ext import commands
 from nextcord import Interaction
 from oni import Onih
+import re
 
 # never ever post the token
 
@@ -98,6 +99,10 @@ async def help(interaction):
         + " and is used like `/owo Hello, World!!`",
     )
     e.add_field(
+        name="Hex",
+        value="This command responds with information about a hex color code and is used like `/hex #FF0000`",
+    )
+    e.add_field(
         name="Help", value="this command displays this message and is used like `/help`"
     )
     await interaction.response.send_message(embed=e)
@@ -158,6 +163,31 @@ async def confess(interaction, text):
                 )
             except:
                 pass
+
+
+@client.slash_command(
+    name="hex", description="Displays a hex color", guild_ids=bot.guilds
+)
+async def hex_cmd(interaction, color):
+    reg = re.compile("#?([0-9a-fA-F]{6})")
+    color = reg.match(color)
+    if color == None:
+        await interaction.response.send_message("Invalid hex color :sad:")
+        return
+    color = color.group(1)
+    rgbcolor = hex2rgb(color)
+    wordcolor = hex2word(color)
+    e = discord.Embed(
+        title=f"Hex Color Info for #{color.upper()}",
+        description=f"Red: {rgbcolor[0]}\nGreen: {rgbcolor[1]}\nBlue: {rgbcolor[2]}",
+        color=int("0x" + color, 16),
+    )
+    e.set_footer(
+        text=f'Closest CSS3 Named color is {wordcolor["name"]}: {wordcolor["hex"]}',
+        icon_url=f'https://www.colorhexa.com/{wordcolor["hex"].replace("#","")}.png',
+    )
+    e.set_thumbnail(url=f"https://www.colorhexa.com/{color}.png")
+    await interaction.response.send_message(embed=e)
 
 
 @client.event

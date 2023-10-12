@@ -1,4 +1,6 @@
 import ast, re, json
+from webcolors import CSS3_HEX_TO_NAMES, CSS3_NAMES_TO_HEX
+from scipy.spatial import KDTree
 
 
 def evaluate_expr(expr):
@@ -78,3 +80,24 @@ def get_settings(fn):
         owners=d["owner_ids"],
     )
     return b
+
+
+def hex2rgb(hex):
+    hex = re.sub("#", "", hex)
+    r = int(hex[0:2], 16)
+    g = int(hex[2:4], 16)
+    b = int(hex[4:6], 16)
+    return (r, g, b)
+
+
+def hex2word(x):
+    rgb_tuple = hex2rgb(x)
+    css3_db = CSS3_HEX_TO_NAMES
+    names = []
+    rgb_values = []
+    for color_hex, color_name in css3_db.items():
+        names.append(color_name)
+        rgb_values.append(hex2rgb(color_hex))
+    kdt_db = KDTree(rgb_values)
+    distance, index = kdt_db.query(rgb_tuple)
+    return {"name": names[index], "hex": CSS3_NAMES_TO_HEX[names[index]]}
