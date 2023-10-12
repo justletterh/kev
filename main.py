@@ -72,43 +72,6 @@ async def owo(interaction, text):
 
 
 @client.slash_command(
-    name="help",
-    description="This command displays the help message for this bot!",
-    guild_ids=bot.guilds,
-)
-async def help(interaction):
-    e = discord.Embed(
-        title=f"{bot.name} Help",
-        color=bot.color,
-        description="This is a list of all my commands and how to use them :)",
-    )
-    e.set_footer(text="Made By Kev And H")
-    e.add_field(name="H", value="This command responds with h and is used like `/h`")
-    e.add_field(
-        name="Calc", value="This command calculates math and is used like `/calc 1+1`"
-    )
-    e.add_field(
-        name="Ping", value="This command responds with pong and is used like `/ping`"
-    )
-    e.add_field(
-        name="Pong", value="This command responds with ping and is used like `/pong`"
-    )
-    e.add_field(
-        name="owo",
-        value=owoify("This command owoifies the text you give it")
-        + " and is used like `/owo Hello, World!!`",
-    )
-    e.add_field(
-        name="Hex",
-        value="This command responds with information about a hex color code and is used like `/hex #FF0000`",
-    )
-    e.add_field(
-        name="Help", value="this command displays this message and is used like `/help`"
-    )
-    await interaction.response.send_message(embed=e)
-
-
-@client.slash_command(
     name="confess", description="Sends an anonymous confession!", guild_ids=bot.guilds
 )
 async def confess(interaction, text):
@@ -187,6 +150,43 @@ async def hex_cmd(interaction, color):
         icon_url=f'https://www.colorhexa.com/{wordcolor["hex"].replace("#","")}.png',
     )
     e.set_thumbnail(url=f"https://www.colorhexa.com/{color}.png")
+    await interaction.response.send_message(embed=e)
+
+
+@client.slash_command(
+    name="help",
+    description="This command displays the help message for this bot!",
+    guild_ids=bot.guilds,
+)
+async def help(interaction):
+    e = discord.Embed(
+        title=f"{bot.name} Help",
+        color=bot.color,
+        description="This is a list of all my commands and how to use them :)",
+    )
+    e.set_footer(text="Made By Kev And H")
+    e.add_field(name="H", value="This command responds with h and is used like `/h`")
+    e.add_field(
+        name="Calc", value="This command calculates math and is used like `/calc 1+1`"
+    )
+    e.add_field(
+        name="Ping", value="This command responds with pong and is used like `/ping`"
+    )
+    e.add_field(
+        name="Pong", value="This command responds with ping and is used like `/pong`"
+    )
+    e.add_field(
+        name="owo",
+        value=owoify("This command owoifies the text you give it")
+        + " and is used like `/owo Hello, World!!`",
+    )
+    e.add_field(
+        name="Hex",
+        value="This command responds with information about a hex color code and is used like `/hex #FF0000`",
+    )
+    e.add_field(
+        name="Help", value="this command displays this message and is used like `/help`"
+    )
     await interaction.response.send_message(embed=e)
 
 
