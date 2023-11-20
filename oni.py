@@ -48,7 +48,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             return
 
     @Feature.Command(
-        parent="oni", name="pyfile", aliases=["pythonfile", "py-file", "python-file"]
+        parent="oni", name="pyfile", aliases=["pythonfile", "py-file", "python-file", "pyf", "pythonf"]
     )
     async def oni_pyfile(self, ctx, file):
         proc = subp.Popen(
@@ -109,6 +109,11 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             "javascript-file",
             "nodejavascriptfile",
             "nodejavascript-file",
+            "jsf",
+            "nodef",
+            "nodejsf",
+            "javascriptf",
+            "nodejavascriptf"
         ],
     )
     async def oni_jsfile(self, ctx, file):
@@ -154,7 +159,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
-        parent="oni", name="rbfile", aliases=["rubyfile", "rb-file", "ruby-file"]
+        parent="oni", name="rbfile", aliases=["rubyfile", "rb-file", "ruby-file", "rubyf", "rbf"]
     )
     async def oni_rbfile(self, ctx, file):
         proc = subp.Popen(
@@ -198,7 +203,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         else:
             await ctx.send("Done! :white_check_mark:")
 
-    @Feature.Command(parent="oni", name="luafile", aliases=["lua-file"])
+    @Feature.Command(parent="oni", name="luafile", aliases=["lua-file", "luaf"])
     async def oni_luafile(self, ctx, file):
         proc = subp.Popen(f"lua {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE)
         stdout, stderr = proc.communicate()
@@ -241,7 +246,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
         else:
             await ctx.send("Done! :white_check_mark:")
 
-    @Feature.Command(parent="oni", name="phpfile", aliases=["php-file"])
+    @Feature.Command(parent="oni", name="phpfile", aliases=["php-file", "phpf"])
     async def oni_phpfile(self, ctx, file):
         proc = subp.Popen(
             f"php -f {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE
@@ -285,11 +290,56 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
-        parent="oni", name="plfile", aliases=["perlfile", "pl-file", "perl-file"]
+        parent="oni", name="plfile", aliases=["perlfile", "pl-file", "perl-file", "perlf", "plf"]
     )
     async def oni_plfile(self, ctx, file):
         proc = subp.Popen(
             f"perl {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE
+        )
+        stdout, stderr = proc.communicate()
+        stdout = stdout.decode("utf-8")
+        stderr = stderr.decode("utf-8")
+        if stderr != "":
+            await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
+        elif stdout != "":
+            await ctx.send(f"```\n{stdout}\n```")
+        else:
+            await ctx.send("Done! :white_check_mark:")
+
+    @Feature.Command(parent="oni", name="clj", aliases=["clojure"])
+    async def oni_clj(self, ctx, *, args=None):
+        if args == None:
+            await ctx.send("Please input some Perl code")
+            return
+        text = args
+        if text.lower().startswith("```clj"):
+            text = text[7 : len(text)]
+        elif text.startswith("```"):
+            text = text[4 : len(text)]
+        if text.endswith("```"):
+            text = text[0 : len(text) - 4]
+        text = text.replace('"', '\\"')
+        proc = subp.Popen(
+            f'clojure -e "{text}"', shell=True, stdout=subp.PIPE, stderr=subp.PIPE
+        )
+        stdout, stderr = proc.communicate()
+        stdout = stdout.decode("utf-8")
+        stderr = stderr.decode("utf-8")
+        if stdout.endswith("\n"):
+            stdout = stdout[0 : len(stdout) - 1]
+        if stderr != "":
+            await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
+        elif stdout != "":
+            await ctx.send(f"```\n{stdout}\n```")
+        else:
+            await ctx.send("Done! :white_check_mark:")
+
+    @Feature.Command(
+        parent="oni", name="cljfile", aliases=["clojurefile", "clj-file", "clojure-file", "clojuref", "cljf"]
+    )
+    async def oni_cljfile(self, ctx, file):
+        proc = subp.Popen(
+            f"clojure {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE
         )
         stdout, stderr = proc.communicate()
         stdout = stdout.decode("utf-8")
