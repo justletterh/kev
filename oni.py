@@ -48,7 +48,9 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             return
 
     @Feature.Command(
-        parent="oni", name="pyfile", aliases=["pythonfile", "py-file", "python-file", "pyf", "pythonf"]
+        parent="oni",
+        name="pyfile",
+        aliases=["pythonfile", "py-file", "python-file", "pyf", "pythonf"],
     )
     async def oni_pyfile(self, ctx, file):
         proc = subp.Popen(
@@ -113,7 +115,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             "nodef",
             "nodejsf",
             "javascriptf",
-            "nodejavascriptf"
+            "nodejavascriptf",
         ],
     )
     async def oni_jsfile(self, ctx, file):
@@ -159,7 +161,9 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
-        parent="oni", name="rbfile", aliases=["rubyfile", "rb-file", "ruby-file", "rubyf", "rbf"]
+        parent="oni",
+        name="rbfile",
+        aliases=["rubyfile", "rb-file", "ruby-file", "rubyf", "rbf"],
     )
     async def oni_rbfile(self, ctx, file):
         proc = subp.Popen(
@@ -290,7 +294,9 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
-        parent="oni", name="plfile", aliases=["perlfile", "pl-file", "perl-file", "perlf", "plf"]
+        parent="oni",
+        name="plfile",
+        aliases=["perlfile", "pl-file", "perl-file", "perlf", "plf"],
     )
     async def oni_plfile(self, ctx, file):
         proc = subp.Popen(
@@ -335,7 +341,9 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
             await ctx.send("Done! :white_check_mark:")
 
     @Feature.Command(
-        parent="oni", name="cljfile", aliases=["clojurefile", "clj-file", "clojure-file", "clojuref", "cljf"]
+        parent="oni",
+        name="cljfile",
+        aliases=["clojurefile", "clj-file", "clojure-file", "clojuref", "cljf"],
     )
     async def oni_cljfile(self, ctx, file):
         proc = subp.Popen(
