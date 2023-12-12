@@ -315,7 +315,7 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
     @Feature.Command(parent="oni", name="clj", aliases=["clojure"])
     async def oni_clj(self, ctx, *, args=None):
         if args == None:
-            await ctx.send("Please input some Perl code")
+            await ctx.send("Please input some Clojure code")
             return
         text = args
         if text.lower().startswith("```clj"):
@@ -348,6 +348,53 @@ class Onih(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
     async def oni_cljfile(self, ctx, file):
         proc = subp.Popen(
             f"clojure {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE
+        )
+        stdout, stderr = proc.communicate()
+        stdout = stdout.decode("utf-8")
+        stderr = stderr.decode("utf-8")
+        if stderr != "":
+            await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
+        elif stdout != "":
+            await ctx.send(f"```\n{stdout}\n```")
+        else:
+            await ctx.send("Done! :white_check_mark:")
+
+"""    @Feature.Command(parent="oni", name="bf", aliases=["brainfuck"])
+    async def oni_clj(self, ctx, *, args=None):
+        if args == None:
+            await ctx.send("Please input some Brain||Fuck|| code")
+            return
+        text = args
+        if text.lower().startswith("```bf"):
+            text = text[6 : len(text)]
+        elif text.startswith("```"):
+            text = text[4 : len(text)]
+        if text.endswith("```"):
+            text = text[0 : len(text) - 4]
+        text = text.replace('"', '\\"')
+        proc = subp.Popen(
+            f'clojure -e "{text}"', shell=True, stdout=subp.PIPE, stderr=subp.PIPE
+        )
+        stdout, stderr = proc.communicate()
+        stdout = stdout.decode("utf-8")
+        stderr = stderr.decode("utf-8")
+        if stdout.endswith("\n"):
+            stdout = stdout[0 : len(stdout) - 1]
+        if stderr != "":
+            await ctx.send(f"Something went wrong :sad: :\n```\n{stderr}\n```")
+        elif stdout != "":
+            await ctx.send(f"```\n{stdout}\n```")
+        else:
+            await ctx.send("Done! :white_check_mark:")"""
+
+    @Feature.Command(
+        parent="oni",
+        name="bffile",
+        aliases=["brainfuckfile", "bf-file", "brianfuck-file", "brainfuckf", "bff"],
+    )
+    async def oni_cljfile(self, ctx, file):
+        proc = subp.Popen(
+            f"beef {file}", shell=True, stdout=subp.PIPE, stderr=subp.PIPE
         )
         stdout, stderr = proc.communicate()
         stdout = stdout.decode("utf-8")
