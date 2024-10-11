@@ -139,15 +139,18 @@ async def hex_cmd(interaction, color):
         return
     color = color.group(1)
     rgbcolor = hex2rgb(color)
-    wordcolor = hex2word(color)
+    try:
+        wordcolor = hex2word(f"#{color}")
+    except ValueError:
+        wordcolor = "unknown"
     e = discord.Embed(
         title=f"Hex Color Info for #{color.upper()}",
         description=f"Red: {rgbcolor[0]}\nGreen: {rgbcolor[1]}\nBlue: {rgbcolor[2]}",
         color=int("0x" + color, 16),
     )
     e.set_footer(
-        text=f'Closest CSS3 Named color is {wordcolor["name"]}: {wordcolor["hex"]}',
-        icon_url=f'https://www.colorhexa.com/{wordcolor["hex"].replace("#","")}.png',
+        text=f'Closest CSS3 Named color is {wordcolor}: #{color}',
+        icon_url=f'https://www.colorhexa.com/{color}.png',
     )
     e.set_thumbnail(url=f"https://www.colorhexa.com/{color}.png")
     await interaction.response.send_message(embed=e)
